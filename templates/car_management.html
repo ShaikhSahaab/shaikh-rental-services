@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<!-- ================= CAR MANAGEMENT ================= -->
+<h5 class="mt-5 mb-3">Car Management</h5>
+
+<div class="table-responsive">
+<table class="table table-bordered table-striped shadow">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Car</th>
+            <th>Price / Day</th>
+            <th>Tag</th>
+            <th>Status</th>
+            <th>Actions</th>
+            <th>Discount %</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for car in cars %}
+        <tr>
+            <td>{{ car[0] }}</td>
+            <td>{{ car[1] }}</td>
+            <td>₹ {{ car[2] }}</td>
+            <td>
+                {% if car[5] > 0 %}
+                    <span class="badge bg-info">{{ car[5] }}% OFF</span>
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+            <td>
+                {% if car[3] == 1 %}
+                    <span class="badge bg-success">Available</span>
+                {% else %}
+                    <span class="badge bg-danger">Booked</span>
+                {% endif %}
+            </td>
+           <td>
+    <a href="/admin/edit_car/{{ car[0] }}"
+       class="btn btn-sm btn-primary">
+       ✏ Edit
+    </a>
+
+    <a href="/admin/delete_car/{{ car[0] }}"
+       class="btn btn-sm btn-danger"
+       onclick="return confirm('Delete this car permanently?')">
+       🗑 Delete
+    </a>
+    <td>
+   <form class="d-flex gap-1 discount-form"
+      data-car-id="{{ car[0] }}">
+
+    <input type="number"
+           name="discount"
+           value="{{ car[5] }}"
+           min="0"
+           max="90"
+           class="form-control form-control-sm"
+           style="width:70px">
+
+    <!-- keep submit button so Enter works -->
+    <button type="submit"
+            class="btn btn-sm btn-success">
+        %
+    </button>
+</form>
+
+
+</td>
+
+</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<script>
+document.querySelectorAll(".discount-form").forEach(form => {
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault(); // ⛔ stop page refresh
+
+        const carId = form.dataset.carId;
+        const input = form.querySelector("input[name='discount']");
+        const btn = form.querySelector("button");
+        const discount = input.value;
+
+        if (discount < 0 || discount > 90) {
+            alert("Discount must be between 0 and 90%");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "⏳";
+
+        fetch(`/admin/discount/${carId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `discount=${discount}`
+        })
+        .then(res => {
+            if (!res.ok) throw new Error();
+            btn.innerText = "✔";
+            btn.classList.remove("btn-success");
+            btn.classList.add("btn-outline-success");
+
+            setTimeout(() => {
+                btn.innerText = "%";
+                btn.classList.remove("btn-outline-success");
+                btn.classList.add("btn-success");
+                btn.disabled = false;
+            }, 1200);
+        })
+        .catch(() => {
+            alert("Failed to update discount");
+            btn.innerText = "%";
+            btn.disabled = false;
+        });
+    });
+
+});
+</script>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+    color: #333;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.toc {
+    flex: 0 0 260px;
+    position: sticky;
+    top: 30px;
+    background: #fff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    animation: fadeIn 1s ease;
+}
+
+.toc h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #2575fc;
+}
+
+.toc a {
+    display: block;
+    color: #555;
+    margin-bottom: 10px;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.toc a:hover, .toc a.active {
+    color: #fff;
+    background-color: #2575fc;
+}
+
+.content {
+    flex: 1;
+}
+
+h1 {
+    color: #2575fc;
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 3em;
+    animation: fadeIn 1.2s ease;
+}
+
+.accordion {
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #ddd;
+    background-color: #fff;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+.accordion-header {
+    cursor: pointer;
+    padding: 18px 22px;
+    font-weight: 600;
+    font-size: 1.25em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.accordion-header:hover {
+    background-color: #f0f4ff;
+}
+
+.accordion-header::after {
+    content: '+';
+    font-weight: bold;
+    font-size: 1.4em;
+    transition: transform 0.3s;
+}
+
+.accordion.active .accordion-header::after {
+    content: '-';
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 0 22px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.accordion-content p, .accordion-content ul {
+    margin: 15px 0;
+}
+
+.accordion-content ul {
+    padding-left: 20px;
+}
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .toc {
+        position: relative;
+        top: 0;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<div class="container">
+    <!-- TOC -->
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <a href="#info-collect">1. Information We Collect</a>
+        <a href="#info-use">2. How We Use Your Information</a>
+        <a href="#legal-basis">3. Legal Basis for Processing</a>
+        <a href="#cookies">4. Cookies & Tracking</a>
+        <a href="#sharing">5. Sharing & Disclosure</a>
+        <a href="#retention">6. Data Retention</a>
+        <a href="#security">7. Data Security</a>
+        <a href="#rights">8. User Rights</a>
+        <a href="#children">9. Children’s Privacy</a>
+        <a href="#third-party">10. Third-Party Services</a>
+        <a href="#transfers">11. International Transfers</a>
+        <a href="#marketing">12. Marketing Communications</a>
+        <a href="#ccpa">13. California Privacy Rights (CCPA)</a>
+        <a href="#gdpr">14. GDPR Compliance (EU/EEA)</a>
+        <a href="#changes">15. Changes to Privacy Policy</a>
+        <a href="#contact">16. Contact Information</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Privacy Policy</h1>
+
+        <!-- 1 -->
+        <div id="info-collect" class="accordion">
+            <div class="accordion-header">1. Information We Collect</div>
+            <div class="accordion-content">
+                <p>We collect different types of information to provide and improve our services:</p>
+                <ul>
+                    <li><strong>Personal Data:</strong> Name, email, phone, address, payment info.</li>
+                    <li><strong>Technical Data:</strong> IP, browser, OS, device info, pages visited.</li>
+                    <li><strong>Behavioral Data:</strong> Usage patterns, clicks, preferences, surveys.</li>
+                    <li><strong>Cookies & Tracking:</strong> Analytics, personalization, session management.</li>
+                    <li><strong>Third-Party Data:</strong> Social media info, marketing partners, publicly available data.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 2 -->
+        <div id="info-use" class="accordion">
+            <div class="accordion-header">2. How We Use Your Information</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Provide, operate, and improve services</li>
+                    <li>Personalize content and experience</li>
+                    <li>Communicate updates, support, and promotions</li>
+                    <li>Process payments securely</li>
+                    <li>Prevent fraud or security incidents</li>
+                    <li>Comply with legal obligations</li>
+                    <li>Analyze trends to enhance quality</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3 -->
+        <div id="legal-basis" class="accordion">
+            <div class="accordion-header">3. Legal Basis for Processing</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Consent: With your permission</li>
+                    <li>Contract: Necessary for services</li>
+                    <li>Legal Obligation: Required by law</li>
+                    <li>Legitimate Interests: Service improvements, marketing, security</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4 -->
+        <div id="cookies" class="accordion">
+            <div class="accordion-header">4. Cookies & Tracking</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Essential cookies for functionality</li>
+                    <li>Performance cookies for analytics</li>
+                    <li>Functional cookies for preferences</li>
+                    <li>Targeting cookies for personalized ads</li>
+                </ul>
+                <p>Disable cookies via your browser, but some features may be affected.</p>
+            </div>
+        </div>
+
+        <!-- 5 -->
+        <div id="sharing" class="accordion">
+            <div class="accordion-header">5. Sharing & Disclosure</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Service providers for operations</li>
+                    <li>Legal authorities if required</li>
+                    <li>Business partners with consent</li>
+                    <li>During mergers or acquisitions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6 -->
+        <div id="retention" class="accordion">
+            <div class="accordion-header">6. Data Retention</div>
+            <div class="accordion-content">
+                <p>We retain data only as long as necessary for services, legal obligations, disputes, and agreements.</p>
+            </div>
+        </div>
+
+        <!-- 7 -->
+        <div id="security" class="accordion">
+            <div class="accordion-header">7. Data Security</div>
+            <div class="accordion-content">
+                <p>We implement appropriate measures to protect your data, though no system is 100% secure.</p>
+            </div>
+        </div>
+
+        <!-- 8 -->
+        <div id="rights" class="accordion">
+            <div class="accordion-header">8. User Rights</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Access and receive your data</li>
+                    <li>Correct inaccurate info</li>
+                    <li>Request deletion</li>
+                    <li>Withdraw consent</li>
+                    <li>Object to marketing or processing</li>
+                    <li>Request data portability</li>
+                    <li>Lodge complaints with authorities</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 9 -->
+        <div id="children" class="accordion">
+            <div class="accordion-header">9. Children’s Privacy</div>
+            <div class="accordion-content">
+                <p>We do not knowingly collect data from children under 13. Any such data is promptly deleted.</p>
+            </div>
+        </div>
+
+        <!-- 10 -->
+        <div id="third-party" class="accordion">
+            <div class="accordion-header">10. Third-Party Services</div>
+            <div class="accordion-content">
+                <p>We may integrate third-party services. Review their privacy policies; we are not responsible for their practices.</p>
+            </div>
+        </div>
+
+        <!-- 11 -->
+        <div id="transfers" class="accordion">
+            <div class="accordion-header">11. International Transfers</div>
+            <div class="accordion-content">
+                <p>Data may be transferred internationally. We use safeguards like standard contractual clauses.</p>
+            </div>
+        </div>
+
+        <!-- 12 -->
+        <div id="marketing" class="accordion">
+            <div class="accordion-header">12. Marketing Communications</div>
+            <div class="accordion-content">
+                <p>If opted-in, we may send newsletters or promotions. You can unsubscribe anytime.</p>
+            </div>
+        </div>
+
+        <!-- 13 -->
+        <div id="ccpa" class="accordion">
+            <div class="accordion-header">13. California Privacy Rights (CCPA)</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Right to know data collected, used, shared</li>
+                    <li>Right to request deletion</li>
+                    <li>Right to opt-out of sale (we do not sell)</li>
+                    <li>Non-discrimination for exercising rights</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 14 -->
+        <div id="gdpr" class="accordion">
+            <div class="accordion-header">14. GDPR Compliance (EU/EEA)</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Transparent collection and processing</li>
+                    <li>Access, correct, delete, restrict processing</li>
+                    <li>Security measures and breach notifications</li>
+                    <li>Transfers outside EU/EEA with safeguards</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 15 -->
+        <div id="changes" class="accordion">
+            <div class="accordion-header">15. Changes to Privacy Policy</div>
+            <div class="accordion-content">
+                <p>Policy may update; changes are posted with an effective date. Continued use means acceptance.</p>
+            </div>
+        </div>
+
+        <!-- 16 -->
+        <div id="contact" class="accordion">
+            <div class="accordion-header">16. Contact Information</div>
+            <div class="accordion-content">
+                <ul>
+                    <li>Email: <a href="mailto:privacy@example.com">privacy@example.com</a></li>
+                    <li>Phone: +1 (123) 456-7890</li>
+                    <li>Address: 123 Main Street, Your City, Your Country</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Accordion toggle
+const accordions = document.querySelectorAll('.accordion');
+accordions.forEach(acc => {
+    const header = acc.querySelector('.accordion-header');
+    header.addEventListener('click', () => {
+        acc.classList.toggle('active');
+        const content = acc.querySelector('.accordion-content');
+        if(acc.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+            content.style.maxHeight = null;
+        }
+    });
+});
+
+// Smooth scroll and TOC highlight
+const tocLinks = document.querySelectorAll('.toc a');
+tocLinks.forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(link.getAttribute('href')).scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+});
+
+window.addEventListener('scroll', () => {
+    let scrollPos = window.scrollY + 120;
+    tocLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        if(section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos){
+            tocLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<div class="row justify-content-center">
+<div class="col-md-4">
+<div class="card p-4 shadow">
+<h4>Invoice</h4>
+<p>Booking ID: {{bill[0]}}</p>
+<p>Days: {{bill[3]}}</p>
+<p>Total: ₹{{bill[4]}}</p>
+<p>Status: {{bill[6]}}</p>
+<p>payment_mode: {{bill[9]}}</p>
+<a href="/dashboard" class="btn btn-primary">Back</a>
+
+</div>
+</div>
+</div>
+{% endblock %}

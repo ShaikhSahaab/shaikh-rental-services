@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<h3 class="mb-4">📄 Booking / Invoice History</h3>
+
+{% if invoices %}
+<div class="table-responsive">
+<table class="table table-striped table-bordered shadow">
+
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Car</th>
+            <th>Days</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for inv in invoices %}
+        <tr>
+            <td>{{ inv[0] }}</td>
+            <td>{{ inv[1] }}</td>
+            <td>{{ inv[2] }}</td>
+            <td>₹ {{ inv[3] }}</td>
+            <td>
+                {% if inv[4] == 'Paid' %}
+                    <span class="badge bg-success">Paid</span>
+                {% elif inv[4] == 'Booked' %}
+                    <span class="badge bg-warning text-dark">Booked</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ inv[4] }}</span>
+                {% endif %}
+            </td>
+            <td>{{ inv[5][:10] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+</div>
+{% else %}
+<div class="alert alert-info text-center">
+    No booking history found.
+</div>
+{% endif %}
+
+{% endblock %}

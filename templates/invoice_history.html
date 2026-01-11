@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<h4>Invoice History</h4>
+
+<form method="post" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label class="form-label">From</label>
+       <input type="date"
+       name="start"
+       class="form-control"
+       value="{{ start or '' }}"
+       required>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">To</label>
+       <input type="date"
+       name="end"
+       class="form-control"
+       value="{{ end or '' }}"
+       required>
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+        <button name="action" value="search" class="btn btn-primary w-100">
+            🔍 Search
+        </button>
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+        <button name="action" value="download" class="btn btn-success w-100">
+            ⬇ Download PDF
+        </button>
+    </div>
+    
+</form>
+
+
+
+<table class="table table-striped shadow">
+    <thead>
+<tr>
+    <th>ID</th>
+    <th>Car</th>
+    <th>Days</th>
+    <th>Original Amount</th>
+    <th>Discount</th>
+    <th>You Saved</th>
+    <th>Amount Paid</th>
+    <th>Payment Mode</th>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+</thead>
+
+
+    <tbody>
+{% for b in invoices %}
+<tr>
+    <td>#{{ b[0] }}</td>
+    <td>{{ b[1] }}</td>
+    <td>{{ b[2] }}</td>
+
+    {% set original = b[3] * b[2] %}
+    <td>₹ {{ original }}</td>
+
+    <td>
+        {% if b[4] > 0 %}
+            {{ b[4] }}%
+        {% else %}
+            —
+        {% endif %}
+    </td>
+
+    <td class="text-success">
+        ₹ {{ original - b[5] }}
+    </td>
+
+    <td class="fw-bold">
+        ₹ {{ b[5] }}
+    </td>
+
+    <td>{{ b[6] or "—" }}</td>
+    <td>{{ b[7] }}</td>
+    <td>{{ b[8][:10] }}</td>
+
+    <!-- ✅ ONLY NEW PART -->
+    <td>
+    <button class="btn btn-sm btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#invoiceModal{{ b[0] }}">
+        🧾 Generate Invoice
+    </button>
+ </td>
+<div class="modal fade" id="invoiceModal{{ b[0] }}" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Generate Invoice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p>
+          Do you want to download the invoice for<br>
+          <strong>Invoice #{{ b[0] }}</strong>?
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <a href="/invoice/{{ b[0] }}/download"
+           class="btn btn-success">
+          ⬇ Download Invoice
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+</tbody>
+
+</table>
+
+{% endblock %}

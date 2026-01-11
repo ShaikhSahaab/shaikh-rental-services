@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<br><br><br><br><br><br><br><br>
+<div class="row justify-content-center">
+<div class="col-md-4">
+<div class="card p-4 shadow">
+<h3 class="text-center">User Login</h3>
+<form method="post">
+<input class="form-control mb-2" name="email" placeholder="Email" required>
+<input class="form-control mb-2" type="password" name="password" placeholder="Password" required>
+<button class="btn btn-primary w-100">Login</button>
+<div class="text-center mt-2">
+<a href="/register">Didn't have account? Sign Up </a><br>
+  <input class="form-check-input" type="checkbox" name="remember" id="remember">
+  <label class="form-check-label" for="remember">
+    Remember me
+  </label>
+
+</form>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

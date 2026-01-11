@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<div style="background-color: #ffdddd; color: #a00; font-weight: bold; padding: 10px 0; text-align: center; overflow: hidden; white-space: nowrap;">
+  <marquee behavior="scroll" direction="left" scrollamount="10">
+    ⚠️ Important Note: The amount you are paying now is only for the car rental. You will need to deposit a security amount at the office.
+  </marquee>
+</div>
+<br><br><br><br><br><br>
+<div class="row justify-content-center">
+  <div class="col-md-4">
+    <div class="card p-4 shadow">
+      <h4 class="mb-3">Book Car</h4>
+      <form method="post">
+        <!-- DAYS INPUT -->
+        <input type="number"
+               id="days"
+               name="days"
+               class="form-control mb-3"
+               min="1"
+               value="1"
+               oninput="updateTotal()"
+               required>
+
+        <!-- BOOKING SUMMARY -->
+        <div class="card shadow p-3 mb-3">
+          <h6 class="mb-2">Booking Summary</h6>
+          <p class="mb-1"><strong>Car:</strong> {{ car_name }}</p>
+
+          {% if discount > 0 %}
+          <p class="mb-1">
+            <strong>Price / day:</strong>
+            <span class="text-decoration-line-through text-muted">₹ {{ price }}</span>
+            <span class="text-success fw-bold ms-2">₹ {{ price - (price * discount // 100) }}</span>
+            <span class="badge bg-info ms-2">{{ discount }}% OFF</span>
+          </p>
+          {% else %}
+          <p class="mb-1"><strong>Price / day:</strong> ₹ {{ price }}</p>
+          {% endif %}
+
+          <p class="mb-1">
+            <strong>You saved:</strong>
+            <span class="text-success">₹ <span id="savedPreview">{{ price * discount // 100 }}</span></span>
+          </p>
+
+          <p class="mb-0 fw-bold">
+            <strong>Total:</strong> ₹ <span id="totalPreview">{{ price - (price * discount // 100) }}</span>
+          </p>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <button type="submit"
+                name="pay_type"
+                value="pay_now"
+                class="btn btn-success w-100 mb-2">
+          💳 Book & Pay Now
+        </button>
+
+        <button type="submit"
+                name="pay_type"
+                value="pay_later"
+                class="btn btn-outline-secondary w-100">
+          🕒 Book & Pay Later
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE TOTAL SCRIPT -->
+<script>
+  const PRICE = {{ price }};
+  const DISCOUNT = {{ discount }};
+
+  function updateTotal() {
+    const days = parseInt(document.getElementById("days").value) || 1;
+
+    const discountedPricePerDay = PRICE - (PRICE * DISCOUNT / 100);
+    const savedPerDay = PRICE * DISCOUNT / 100;
+
+    document.getElementById("savedPreview").innerText = Math.round(savedPerDay * days);
+    document.getElementById("totalPreview").innerText = Math.round(discountedPricePerDay * days);
+  }
+
+  // Initialize totals on page load
+  updateTotal();
+</script>
+{% endblock %}

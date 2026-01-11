@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<div class="home-hero">
+    <div class="home-overlay">
+        <div class="home-content container">
+
+            <h1>Rent Cars & Bikes<br>Anytime, Anywhere</h1>
+            <p>
+                Affordable prices • Easy booking • Instant refunds
+                Experience hassle-free vehicle rentals
+            </p>
+
+            {% if session.get("role") %}
+            <!-- Logged in -->
+            <a href="/dashboard" class="btn btn-primary btn-lg me-3">
+                🚗 Rent a Car
+            </a>
+            <a href="/dashboard" class="btn btn-outline-light btn-lg">
+                🏍 Rent a Bike
+            </a>
+            {% else %}
+            <!-- Not logged in -->
+            <a href="/login" class="btn btn-primary btn-lg me-3">
+                🚗 Rent a Car
+            </a>
+            <a href="/login" class="btn btn-outline-light btn-lg">
+                🏍 Rent a Bike
+            </a>
+            {% endif %}
+
+            <div class="home-features mt-4">
+                <span>✔ No hidden charges</span>
+                <span>✔ 24×7 Support</span>
+                <span>✔ Flexible cancellation</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= VEHICLE CATEGORIES ================= -->
+
+<div class="container my-5">
+    <div class="row text-center g-4">
+
+        <div class="col-md-6">
+            <div class="category-card">
+                <img src="/static/images/nexon.png">
+                <h4>Cars</h4>
+                <p>Comfortable & premium cars for every trip</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="category-card">
+                <img src="/static/images/hondacb350.png">
+                <h4>Bikes</h4>
+                <p>Quick & affordable rides for the city</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<h3 class="mb-4">Find User</h3>
+
+<form method="post" class="mb-4">
+  <input class="form-control" name="query" placeholder="Search by name or email">
+</form>
+
+<table class="table">
+<tr><th>ID</th><th>Name</th><th>Email</th><th>Action</th></tr>
+{% for u in users %}
+<tr>
+  <td>{{ u[0] }}</td>
+  <td>{{ u[1] }}</td>
+  <td>{{ u[2] }}</td>
+  <td>
+    <a href="/admin_user_invoices/{{ u[0] }}" class="btn btn-sm btn-primary">
+      View Invoices
+    </a>
+  </td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+
+@app.route("/admin_user_invoices/<int:user_id>")
+def admin_user_invoices(user_id):
+    if 'admin' not in session:
+        return redirect("/")
+
+    con = db()
+    cur = con.cursor()
+    cur.execute("""
+        SELECT id, total, date, status
+        FROM bookings
+        WHERE user_id=?
+    """, (user_id,))
+    invoices = cur.fetchall()
+    con.close()
+
+    return render_template("admin_user_invoices.html", invoices=invoices)

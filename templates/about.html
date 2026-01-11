@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+            radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+            linear-gradient(135deg, #2b4480, #020617);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .card {
+        background: white;
+        max-width: 900px;
+        width: 90%;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        padding: 60px 40px;
+        box-sizing: border-box;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    header h1 {
+        font-size: 2.8em;
+        margin-bottom: 10px;
+        color: #2575fc;
+    }
+
+    header p {
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    section {
+        margin-bottom: 60px;
+    }
+
+    h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        color: #1a1a1a;
+        position: relative;
+    }
+
+    h2::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: #2575fc;
+        margin-top: 8px;
+        border-radius: 2px;
+    }
+
+    p {
+        font-size: 1.1em;
+        line-height: 1.8;
+        color: #555;
+    }
+
+    .team {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .team-member {
+        background: #f9f9f9;
+        border-radius: 12px;
+        padding: 25px 20px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .team-member:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .team-member img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        /* optional small rounding for a modern look */
+        margin-bottom: 15px;
+        border: 3px solid #2575fc;
+        object-fit: cover;
+    }
+
+    .team-member h3 {
+        font-size: 1.2em;
+        margin-bottom: 5px;
+        color: #1a1a1a;
+    }
+
+    .team-member p {
+        font-size: 1em;
+        color: #777;
+        margin: 0;
+    }
+
+    @media (max-width: 600px) {
+        .card {
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-size: 2em;
+        }
+
+        header p {
+            font-size: 1em;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="card">
+        <header>
+            <h1>About Us</h1>
+            <p>Our story, mission, and the team behind the platform</p>
+        </header>
+
+        <main>
+            <section>
+                <h2>Our Mission</h2>
+                <p>We aim to deliver a seamless and high-quality experience to our users. Our focus is on innovation,
+                    reliability, and building a platform that adds real value to our community. Every feature we build
+                    is designed to make life simpler and better.</p>
+            </section>
+
+            <section>
+                <h2>Our Story</h2>
+                <p>Founded with a vision to empower people and communities, our platform started as a small idea in 2025
+                    and has grown into a trusted service used by hundreds every day. We believe in continuous
+                    improvement, learning from our users, and staying ahead with innovative solutions.</p>
+            </section>
+
+            <section>
+                <h2>Meet the Team</h2>
+                <div class="team">
+                    <div class="team-member">
+                        <img src="https://i.ibb.co/0jxD0kjG/2.png" alt="2" border="0">
+                        <h3>Shaikh Samir</h3>
+                        <p>Co-founder & CEO</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="team2.jpg" alt="Team Member 2">
+                        <h3>John Smith</h3>
+                        <p>Lead Developer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="team3.jpg" alt="Team Member 3">
+                        <h3>Emily Lee</h3>
+                        <p>Design & UX Lead</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="team4.jpg" alt="Team Member 4">
+                        <h3>Michael Brown</h3>
+                        <p>Marketing & Growth</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    {% endblock %}

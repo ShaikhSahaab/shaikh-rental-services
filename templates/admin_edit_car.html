@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+<br>
+<br><br><br><br><br><br><br><br>
+<h4>Edit Car</h4>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card p-4 shadow">
+
+      <form method="post">
+
+        <label>Car Name</label>
+        <input class="form-control mb-3"
+               name="name"
+               value="{{ car[1] }}"
+               required>
+
+        <label>Price / Day</label>
+        <input class="form-control mb-3"
+               type="number"
+               name="price"
+               value="{{ car[2] }}"
+               required>
+
+        <button class="btn btn-success w-100">
+            💾 Save Changes
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

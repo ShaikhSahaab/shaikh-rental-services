@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shaikh's Shaikh's Rental Services Services</title>
+
+    <script>
+        navigator.serviceWorker.register("/static/sw.js", {
+            scope: "/"
+        });
+    </script>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/static/sw.js", { scope: "/" });
+        }
+    </script>
+
+
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/static/Logos/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/Logos/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/Logos/favicon_io/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/Logos/favicon_io/apple-touch-icon.png" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+</head>
+
+
+
+<script>
+    document.addEventListener("keydown", function (e) {
+        // Ctrl + Alt + A
+        if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "a") {
+            window.location.href = "/admin_login";
+        }
+    });
+</script>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="toast align-items-center text-bg-{{ category }} border-0 mb-2" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElList = document.querySelectorAll('.toast')
+        toastElList.forEach(toastEl => {
+            new bootstrap.Toast(toastEl, { delay: 3000 }).show()
+        })
+    });
+</script>
+
+
+
+
+<body class="sidebar-collapsed">
+
+    <div class="d-flex">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h4 class="logo"><a href="/">
+                    <img src="/static/Logos/logo.png" width="500px" alt=""> </a>
+                <span class="brand-text"><a href="/"> Shaikh's Rental Services</a></span>
+            </h4>
+
+            <button class="sidebar-toggle" id="sidebarToggle" type="button">
+                ☰
+            </button>
+
+            <nav>
+
+                <!-- ================= PUBLIC LINKS (ALWAYS VISIBLE) ================= -->
+                
+
+                {% if session.get("role") != "admin" %} <a href="/about">
+                    <span class="nav-text">📌 About Us</span>
+                </a>
+
+                <a href="/privacy">
+                    <span class="nav-text">🕵🏻 Privacy & Policy</span>
+                </a>
+
+                <a href="/rules">
+                    <span class="nav-text">🫱🏼‍🫲🏼 Rules</span>
+                </a>
+
+                <a href="/complaints">
+                    <span class="nav-text">📜 Complaints</span>
+                </a>
+
+                <a href="/reviews">
+                    <span class="nav-text">🗞️ Reviews</span>
+                </a>
+                {% endif %}
+
+
+                <!-- ================= LOGGED-IN USERS (USER + ADMIN) ================= -->
+                 {% if session.get("role") %}
+                   {% if session.get("role") != "admin" %}
+
+                <a href="/dashboard">
+                    <span class="nav-text">ℹ️ Dashboard</span>
+                </a>
+
+                <a href="/invoice_history">
+                    <span class="nav-text">🧾 Invoices</span>
+                </a>
+                {% endif %}
+
+                <!-- ================= ADMIN ONLY ================= -->
+                {% if session.get("role") == "admin" %}
+
+                <div class="nav-section-title" onclick="toggleAdminControls()" style="cursor:pointer;">
+                    ⚙ Admin Controls
+                </div>
+
+                <div id="adminControls" style="display:none;">
+
+                    <a href="/admin">
+                        <span class="nav-text">🛠 Admin Dashboard</span>
+                    </a>
+
+                    <a href="/admin/invoices">
+                        <span class="nav-text">📊 Invoice Reports</span>
+                    </a>
+
+                    <a href="/admin_add_car">
+                        <span class="nav-text">➕ Add Car</span>
+                    </a>
+
+                    <a href="/car/management">
+                        <span class="nav-text">🧑🏻‍🔧 Modify Cars</span>
+                    </a>
+
+                    <a href="/admin/refunds">
+                        <span class="nav-text">💸 Refund Analytics</span>
+                    </a>
+
+                    <a href="/admin_reset">
+                        <span class="nav-text">🧹 Reset Selected</span>
+                    </a>
+
+                    <form method="post" action="/admin_reset"
+                        onsubmit="return confirm('This will reset ALL bookings. Continue?')">
+                        <button type="submit" class="btn btn-danger">
+                            🔥 Reset All Data
+                        </button>
+                    </form>
+
+                </div>
+                 {% endif %}
+
+                {% endif %}
+
+
+                <!-- ================= PROFILE (ONLY AFTER LOGIN) ================= -->
+                {% if session.get("role") %}
+                <div class="sidebar-profile">
+
+                    <div class="profile-header" onclick="toggleProfileMenu()" style="cursor:pointer;">
+
+                        <div class="profile-avatar">
+                            {% if session.get("profile_pic") %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ session.get('profile_pic')) }}">
+                            {% else %}
+                            {{ session.get('user_name','A')[:1] | upper }}
+                            {% endif %}
+                        </div>
+
+                        <div class="profile-info">
+                            {% if session.get("role") == "admin" %}
+                            <strong>Admin</strong>
+                            <small>Administrator</small>
+                            {% else %}
+                            <strong>{{ session.get('user_name','User') }}</strong>
+                            <small>Account</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="profile-menu" id="profileMenu" style="display:none;">
+                        {% if session.get("role") != "admin" %}
+                        <a href="/profile">Profile Settings</a>
+                        <a href="/logout_user" class="danger">Logout</a>
+                        {% else %}
+                        <a href="/logout_admin" class="danger">Logout</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+                {% endif %}
+
+            </nav>
+
+        </aside>
+
+
+
+
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- REUSABLE CARD -->
+    <div id="floatingCard" class="card function-card shadow-lg">
+        <div class="card-body">
+            <h5 class="card-title" id="floatingCardTitle"></h5>
+            <div class="card-content" id="floatingCardContent">
+                <!-- Dynamic content will appear here -->
+            </div>
+            <button class="btn btn-primary btn-sm mt-2" onclick="closeFloatingCard()">Close</button>
+        </div>
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer class="footer bg-dark text-white d-flex justify-content-between align-items-center px-3 py-3">
+        <!-- Center copyright -->
+        <div class="mx-auto text-center">
+            © 2025 <strong>Shaikh's Rental Services</strong>. All rights reserved.
+        </div>
+
+        <!-- Right function links -->
+        <div class="footer-links">
+            <a href="javascript:void(0)" onclick="openFloatingCard('Terms & Conditions')">Terms & Conditions | </a>
+            <a href="javascript:void(0)" onclick="openFloatingCard('Safety Tips')">Safety Tips | </a>
+            <a href="javascript:void(0)" onclick="openFloatingCard('Donate Us')">Donate Us | </a>
+            <a href="javascript:void(0)" onclick="openFloatingCard('Contact Us')">Contact Us </a>
+        </div>
+    </footer>
+
+
+
+
+
+
+    <!-- SAFETY TIPS CARD -->
+    <div id="safetyCard" class="card function-card shadow-lg">
+        <div class="card-body">
+            <h5 class="card-title">Safety Tips</h5>
+            <ul class="card-text">
+                <li><strong>Personal Info:</strong> Never share passwords or payment info.</li>
+                <li><strong>Booking & Payment:</strong> Use official gateways and check invoices.</li>
+                <li><strong>Vehicle Pickup & Return:</strong> Inspect vehicles, carry license, return on time.</li>
+                <li><strong>Driving Safety:</strong> Follow traffic rules, wear seatbelts, avoid alcohol/drugs.</li>
+                <li><strong>Online Interactions:</strong> Verify support contacts, don’t share info online.</li>
+                <li><strong>Reporting Issues:</strong> Report vehicle problems or suspicious activity promptly.</li>
+            </ul>
+            <button class="btn btn-primary btn-sm mt-2" onclick="closeSafetyCard()">Close</button>
+        </div>
+    </div>
+
+
+    <!-- SAFETY TIPS CARD -->
+    <div id="contact us" class="card function-card shadow-lg">
+        <div class="card-body">
+            <h5 class="card-title">Contact Us </h5>
+            <ul class="card-text">
+                <li><strong>Personal Info:</strong> Never share passwords or payment info.</li>
+                <li><strong>Booking & Payment:</strong> Use official gateways and check invoices.</li>
+                <li><strong>Vehicle Pickup & Return:</strong> Inspect vehicles, carry license, return on time.</li>
+                <li><strong>Driving Safety:</strong> Follow traffic rules, wear seatbelts, avoid alcohol/drugs.</li>
+                <li><strong>Online Interactions:</strong> Verify support contacts, don’t share info online.</li>
+                <li><strong>Reporting Issues:</strong> Report vehicle problems or suspicious activity promptly.</li>
+            </ul>
+            <button class="btn btn-primary btn-sm mt-2" onclick="closeSafetyCard()">Close</button>
+        </div>
+    </div>
+
+    <div id="installPopup" class="install-popup">
+        <div class="install-box">
+            <h4>Install Shaikh's Rental Services</h4>
+            <p>Get a faster, app-like experience on your PC.</p>
+
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="closeInstallPopup()">
+                    Not now
+                </button>
+                <button class="btn btn-primary" onclick="installApp()">
+                    ⬇ Install
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const body = document.body;
+        const toggleBtn = document.getElementById("sidebarToggle");
+        const profileMenu = document.getElementById("profileMenu");
+        const adminControls = document.getElementById("adminControls");
+
+        let autoHideTimer = null;
+
+        /* ---------------------------
+           FORCE DEFAULT STATE
+           (DO NOT AUTO-OPEN)
+        ---------------------------- */
+        body.classList.add("sidebar-collapsed");
+        localStorage.setItem("sidebarState", "collapsed");
+
+        /* ---------------------------
+           OPEN / CLOSE (CLICK ONLY)
+        ---------------------------- */
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", function () {
+
+                // toggle sidebar
+                body.classList.toggle("sidebar-collapsed");
+
+                // save state
+                const isOpen = !body.classList.contains("sidebar-collapsed");
+                localStorage.setItem("sidebarState", isOpen ? "expanded" : "collapsed");
+
+                // close menus
+                closeMenus();
+
+                // auto-hide if opened
+                if (isOpen) startAutoHide();
+                else clearTimeout(autoHideTimer);
+            });
+        }
+
+        /* ---------------------------
+           AUTO HIDE AFTER 5 SECONDS
+        ---------------------------- */
+        function startAutoHide() {
+            clearTimeout(autoHideTimer);
+            autoHideTimer = setTimeout(() => {
+                body.classList.add("sidebar-collapsed");
+                localStorage.setItem("sidebarState", "collapsed");
+                closeMenus();
+            }, 10000);
+        }
+
+        /* ---------------------------
+           MENU CONTROLS
+        ---------------------------- */
+        function closeMenus() {
+            if (profileMenu) profileMenu.style.display = "none";
+            if (adminControls) adminControls.style.display = "none";
+        }
+
+        window.toggleProfileMenu = function () {
+            if (!profileMenu) return;
+            profileMenu.style.display =
+                profileMenu.style.display === "flex" ? "none" : "flex";
+        };
+
+        window.toggleAdminControls = function () {
+            if (!adminControls) return;
+            adminControls.style.display =
+                adminControls.style.display === "block" ? "none" : "block";
+        };
+
+    });
+</script>
+
+<script>
+    const card = document.getElementById('floatingCard');
+    const cardTitle = document.getElementById('floatingCardTitle');
+    const cardContent = document.getElementById('floatingCardContent');
+
+    function openFloatingCard(type) {
+        cardTitle.innerText = type;
+
+        switch (type) {
+            case 'Terms & Conditions':
+                cardContent.innerHTML = "<p>Here you can write your Terms & Conditions details...</p>";
+                break;
+            case 'Safety Tips':
+                cardContent.innerHTML = `
+    <ul>
+        <li><strong>Personal Info:</strong> Never share passwords or payment info.</li>
+        <li><strong>Booking & Payment:</strong> Use official gateways and check invoices.</li>
+        <li><strong>Vehicle Pickup & Return:</strong> Inspect vehicles, carry license, return on time.</li>
+        <li><strong>Driving Safety:</strong> Follow traffic rules, wear seatbelts, avoid alcohol/drugs.</li>
+        <li><strong>Online Interactions:</strong> Verify support contacts, don’t share info online.</li>
+        <li><strong>Reporting Issues:</strong> Report vehicle problems or suspicious activity promptly.</li>
+    </ul>`;
+                break;
+            case 'Donate Us':
+                cardContent.innerHTML = ` <h3>Support Our Service</h3>
+        <p>You can donate to help us maintain and improve our service. We accept the following payment methods:</p>
+        <ul>
+            <li>Credit/Debit Card: [unavailable]</li>
+             <li>Google Pay (GPay): Send payments to UPI ID <strong>8657305449@fam</strong></li>
+        </ul>
+        <p>Thank you for your support!</p>`
+                break;
+            case 'Contact Us':
+                cardContent.innerHTML = `
+        <h2>Contact Us</h2>
+        <p>If you have any questions, suggestions, or feedback, we'd love to hear from you!</p>
+        <p>Email: <a href="mailto:support@example.com">support@example.com</a></p>
+        <p>Phone: +1 (123) 456-7890</p>
+        <p>Address: 123 Main Street, Your City, Your Country</p>
+    `;
+                break;
+
+            default:
+                cardContent.innerHTML = "<p>No content available.</p>";
+        }
+
+        card.style.display = 'block';
+    }
+
+    function closeFloatingCard() {
+        card.style.display = 'none';
+    }
+</script>
+
+
+<script>
+    function showCard(title) {
+        document.getElementById('cardTitle').innerText = title;
+        document.getElementById('cardContent').innerText = `${title} content goes here.`;
+        document.getElementById('functionCard').style.display = 'block';
+    }
+
+    function closeCard() {
+        document.getElementById('functionCard').style.display = 'none';
+    }
+</script>
+
+<script>
+let deferredPrompt;
+let popupShown = false;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Delay popup (VERY IMPORTANT)
+  setTimeout(() => {
+    if (!popupShown) {
+      document.getElementById("installPopup").style.display = "flex";
+      popupShown = true;
+    }
+  }, 3000); // 3s after engagement
+});
+
+async function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  closeInstallPopup();
+}
+
+function closeInstallPopup() {
+  document.getElementById("installPopup").style.display = "none";
+}
+</script>
+
+
+</html>

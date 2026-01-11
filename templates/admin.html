@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<h3 class="mb-4">Admin Dashboard</h3>
+
+<!-- ================= STATS ================= -->
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow p-3">
+            <h6 class="text-muted">Total Users</h6>
+            <h3>{{ total_users }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow p-3">
+            <h6 class="text-muted">Total Cars</h6>
+            <h3>{{ total_cars }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow p-3">
+            <h6 class="text-muted">Active Bookings</h6>
+            <h3>{{ active_bookings }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow p-3">
+            <h6 class="text-muted">Total Revenue</h6>
+            <h3>₹ {{ total_revenue }}</h3>
+            <small class="text-muted">Collected revenue (permanent)</small>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= RECENT BOOKINGS ================= -->
+<h5 class="mb-3">Recent Bookings</h5>
+
+{% if recent_bookings %}
+<div class="table-responsive">
+<table class="table table-bordered table-striped shadow">
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Car</th>
+            <th>Days</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for b in recent_bookings %}
+        <tr>
+            <td>#{{ b[0] }}</td>
+            <td>{{ b[1] }}</td>
+            <td>{{ b[2] }}</td>
+            <td>{{ b[3] }}</td>
+            <td>₹ {{ b[4] }}</td>
+            <td>
+                {% if b[5] == 'Paid' %}
+                    <span class="badge bg-success">Paid</span>
+                {% elif b[5] == 'Booked' %}
+                    <span class="badge bg-warning text-dark">Booked</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ b[5] }}</span>
+                {% endif %}
+            </td>
+            <td>{{ b[6] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+</div>
+{% else %}
+<div class="card p-4 text-center text-muted shadow">
+    No bookings found
+</div>
+{% endif %}
+
+
+
+{% endblock %}

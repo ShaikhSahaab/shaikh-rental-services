@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+        body {
+            font-family: Arial, sans-serif;
+           background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #c0392b;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 12px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📜 Rental Car Rules & User Responsibilities</h1>
+    <ul>
+        <li>User must be 18 years or older with a valid driving license.</li>
+        <li>Full rental payment must be completed before car pickup.</li>
+        <li>Security deposit is refundable after car inspection.</li>
+        <li>The rented car must be returned on or before the agreed time.</li>
+        <li>Late returns may result in extra charges or full-day rent.</li>
+        <li>Return the car with the same fuel level as received.</li>
+        <li>Only the registered user is allowed to drive the car.</li>
+        <li>No alcohol, drugs, rash driving, or racing.</li>
+        <li>No commercial use such as taxi or delivery services.</li>
+        <li>User is responsible for traffic fines, challans, and penalties.</li>
+        <li>User must pay for damages not covered by insurance.</li>
+        <li>Violation of rules may lead to booking cancellation without refund.</li>
+    </ul>
+</div>
+{% endblock %}

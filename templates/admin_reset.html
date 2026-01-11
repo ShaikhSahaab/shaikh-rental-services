@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<h3 class="mb-4">Reset System Data</h3>
+
+<div class="alert alert-warning">
+  ⚠ This action will delete all bookings and reset car availability.
+</div>
+
+<form method="post"
+      onsubmit="return confirm('Are you sure? This cannot be undone!')">
+
+  <button class="btn btn-danger">
+    🔥 Reset All Data
+  </button>
+
+</form>
+
+{% endblock %}

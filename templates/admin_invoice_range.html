@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Download Invoice Report</h3>
+
+<form method="post" class="row g-3">
+
+  <div class="col-md-3">
+    <label>From Date</label>
+    <input
+      type="date"
+      name="start"
+      class="form-control"
+      required
+      value="{{ request.form.start or '' }}"
+    >
+  </div>
+
+  <div class="col-md-3">
+    <label>To Date</label>
+    <input
+      type="date"
+      name="end"
+      class="form-control"
+      required
+      value="{{ request.form.end or '' }}"
+    >
+  </div>
+
+  <div class="col-md-4">
+    <label>User ID or Name (optional)</label>
+    <input
+      type="text"
+      name="user"
+      class="form-control"
+      placeholder="e.g. 3 or Rahul"
+      value="{{ request.form.user or '' }}"
+    >
+  </div>
+
+  <div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-dark w-100">
+      📥 Download
+    </button>
+  </div>
+
+</form>
+
+{% endblock %}

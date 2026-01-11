@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style> 
+body {
+background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+            radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+            linear-gradient(135deg, #2b4480, #020617);
+}
+            </style>
+
+<h3>Add New Car</h3>
+
+<form method="post" enctype="multipart/form-data" class="mt-4">
+
+  <div class="mb-3">
+    <label>Car Name</label>
+    <input class="form-control" name="name" required>
+  </div>
+
+  <div class="mb-3">
+    <label>Price per Day</label>
+    <input class="form-control" type="number" name="price" required>
+  </div>
+
+  <div class="mb-3">
+    <label>Car Image</label>
+    <input class="form-control" type="file" name="image" accept="image/*" onchange="previewImage(event)">
+  </div>
+
+  <!-- IMAGE PREVIEW -->
+  <div class="mb-3">
+    <img id="preview" src="{{ url_for('static', filename='cars/default.png') }}"
+         style="max-width: 250px; border-radius: 12px;">
+  </div>
+
+  <button class="btn btn-primary">Add Car</button>
+
+</form>
+
+<script>
+function previewImage(event) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    document.getElementById("preview").src = reader.result;
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+</script>
+
+{% endblock %}

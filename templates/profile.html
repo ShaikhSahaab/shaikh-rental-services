@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<style>
+  body {
+    background: radial-gradient(circle at 30% 30%, #ff9f1c, transparent 35%),
+      radial-gradient(circle at 90% 20%, #b64f00, transparent 65%),
+      linear-gradient(135deg, #2b4480, #020617);
+  }
+</style>
+
+<style>
+    /* =========================
+   Profile Page – Premium UI
+   ========================= */
+
+body {
+    background: linear-gradient(135deg, #f3f4f6, #eef2ff);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Container */
+.profile-container {
+    max-width: 520px;
+    margin: 60px auto;
+    background: #ffffff;
+    padding: 35px 40px;
+    border-radius: 16px;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.08),
+        0 8px 16px rgba(0, 0, 0, 0.04);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Headings */
+.profile-container h2 {
+    margin-bottom: 24px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.profile-container h3 {
+    margin: 30px 0 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Divider */
+.profile-container hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+    margin: 30px 0;
+}
+
+/* Alerts */
+.alert {
+    background: #ecfeff;
+    border-left: 4px solid #06b6d4;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #0f172a;
+    font-size: 14px;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: #fafafa;
+}
+
+input::file-selector-button {
+    background: #4f46e5;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-right: 12px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Button */
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 13px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    /* box-shadow: 0 10px 20px rgba(79, 70, 229, 0.35); */
+}
+
+button:active {
+    transform: translateY(0);
+    /* box-shadow: 0 6px 12px rgba(79, 70, 229, 0.25); */
+}
+
+/* Subtle animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Friendly */
+@media (max-width: 600px) {
+    .profile-container {
+        margin: 30px 16px;
+        padding: 28px;
+    }
+}
+
+</style>
+
+<div class="profile-container">
+    <h2>Profile Settings</h2>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="/profile" method="POST" enctype="multipart/form-data">
+
+        <!-- Change Name -->
+        <div class="form-group">
+            <label for="username">Display Name</label>
+            <input type="text" id="username" name="username"
+                   value="{{ session.get('user_name') }}" required>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="form-group">
+            <label for="pfp">Profile Picture</label>
+            <input type="file" id="pfp" name="pfp" accept="image/*">
+        </div>
+
+        <!-- Change Password -->
+        <hr>
+
+        <h3>Change Password</h3>
+
+        <div class="form-group">
+            <label for="current_password">Current Password</label>
+            <input type="password" id="current_password" name="current_password">
+        </div>
+
+        <div class="form-group">
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" name="new_password">
+        </div>
+
+        <div class="form-group">
+            <label for="confirm_password">Confirm New Password</label>
+            <input type="password" id="confirm_password" name="confirm_password">
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
